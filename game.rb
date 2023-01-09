@@ -1,18 +1,16 @@
 class Game
   def initialize
     @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
-    @com = "X" # the computer's marker
-    @hum = "O" # the user's marker
+    @com = "X" 
+    @hum = "O" 
     @valid = true
     @winner = nil
     @best_move = nil
   end
 
   def start_game
-    # start by printing the board
     puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
     puts "Enter [0-8]:"
-    # loop through until the game was won or tied
     until game_is_over(@board) || tie(@board)
       get_human_spot(@board)
       if !game_is_over(@board) && !tie(@board)
@@ -23,7 +21,7 @@ class Game
     if tie(@board)
       puts "Ninguém venceu"
     end
-    puts "Game over"
+    # puts "Game over"
   end
 
   def get_human_spot(board)
@@ -31,43 +29,31 @@ class Game
     available_spaces = []
     board.each do |s|
       if s != "X" && s != "O"
-        available_spaces << s.to_i
+        available_spaces << s
 
       end
     end
-    puts "avail sp #{available_spaces}"
-
     
     spot = nil
+
     until spot
+      spot = gets.chomp
 
-      # if available_spaces.include?(spot) == false
-      #   puts "deu erro"
-      #   @valid = false
-      # end
-
-      spot = gets.chomp.to_i
-      # puts spot.class
-      if available_spaces.include?(spot)
-        @valid == true
-        if @board[spot] != "X" && @board[spot] != "O"
-          if spot >= @board.length
-            puts "Insert a valid number"
-            @valid = false
-          else
-            @board[spot] = @hum
-            @valid = true
-          end
-        else
-          puts "Insira em um campo disponível"
-          @valid = false
-          spot = nil
-        end
-      else
-        puts "Tipo errado bro"
+      until available_spaces.include?(spot)
+        puts "Inclua um numero"
         @valid = false
         return
-        # spot = nil
+      end
+
+      if available_spaces.include?(spot)
+        spot = spot.to_i
+        @valid == true
+        if @board[spot] != "X" && @board[spot] != "O"
+            @board[spot] = @hum
+            @valid = true
+        end
+      else
+        spot = nil
       end
     end
   end
@@ -96,24 +82,17 @@ class Game
   def get_best_move(board, next_player, depth = 0, best_score = {})
     available_spaces = []
     best_move = nil
-    # pesquisar o que é o |s|
     board.each do |s|
       if s != "X" && s != "O"
-        # pesquisar oq é p <<
-        # nao permitir escolher espaços já escolhidos
         available_spaces << s
       end
     end
-    # print available_spaces
+
     available_spaces.each do |as|
-      # puts as
-      #atribuindo cada número available no @com
       board[as.to_i] = @com
       if game_is_over(board)
-        # ainda nao entendi essa parte
         best_move = as.to_i
         board[as.to_i] = as
-        # puts "best move comp #{best_move}"
         return best_move
       else
         board[as.to_i] = @hum
@@ -126,6 +105,7 @@ class Game
         end
       end
     end
+
     if best_move
       return best_move
     else
@@ -148,7 +128,7 @@ class Game
     [b[0], b[4], b[8]].uniq.length == 1 ||
     [b[2], b[4], b[6]].uniq.length == 1
 
-    if 
+    
   end
 
   def tie(b)
