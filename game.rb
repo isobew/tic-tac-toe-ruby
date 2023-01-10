@@ -9,19 +9,26 @@ class Game
   end
 
   def start_game
-    puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
-    puts "Enter [0-8]:"
+    show_board(@board)
+    
     until game_is_over(@board) || tie(@board)
       get_human_spot(@board)
       if !game_is_over(@board) && !tie(@board)
         eval_board
       end
-      puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
+     
+      show_board(@board)
     end
+
     if tie(@board)
       puts "Ninguém venceu"
     end
     # puts "Game over"
+  end
+
+  def show_board(board)
+    puts " #{board[0]} | #{board[1]} | #{board[2]} \n===+===+===\n #{board[3]} | #{board[4]} | #{board[5]} \n===+===+===\n #{board[6]} | #{board[7]} | #{board[8]} \n"
+    puts "Enter [0-8]:"
   end
 
   def get_human_spot(board)
@@ -107,6 +114,7 @@ class Game
     end
 
     if best_move
+      puts bets_move
       return best_move
     else
       n = rand(0..available_spaces.count)
