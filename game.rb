@@ -14,38 +14,18 @@ class Game
 
     if @chosen == true
       show_board(@board)
-
-      # if @multiplayer == false
-        # executar jogo já criado
-        until game_is_over(@board) || tie(@board)
-          get_human_spot(@board)
-          if !game_is_over(@board) && !tie(@board)
-            # eval_board
-
-            if @multiplayer == false
-              eval_board
-            else
-              show_board(@board)
-              get_player2_spot(@board)
-            end
+      until game_is_over(@board) || tie(@board)
+        get_human_spot(@board)
+        if !game_is_over(@board) && !tie(@board)
+          if @multiplayer == false
+            eval_board
+          else
+            show_board(@board)
+            get_player2_spot(@board)
           end
-         
-          show_board(@board)
         end
-      # else
-      #   puts "multiplayer"
-      #   # executar jogo novo pra 2 players
-      #   until game_is_over(@board) || tie(@board)
-      #     get_human_spot(@board)
-      #     if !game_is_over(@board) && !tie(@board)
-      #       eval_board
-      #       #mudança aqui
-      #     end
-         
-      #     show_board(@board)
-      #   end
-      # end
-      
+        show_board(@board)
+      end
   
       if tie(@board)
         puts "Game over, tied."
@@ -53,11 +33,10 @@ class Game
         winner(@board)
       end
     end
-
   end
 
   def choose_multiplayer()
-    puts "Escolha o seu modo de jogo
+    puts "Choose your game mode
     
     0 - User VS PC
     1 - User VS User
@@ -91,12 +70,10 @@ class Game
   end
 
   def get_human_spot(board)
-
     available_spaces = []
     board.each do |s|
       if s != "X" && s != "O"
         available_spaces << s
-
       end
     end
     
@@ -122,12 +99,10 @@ class Game
   end
 
   def get_player2_spot(board)
-
     available_spaces = []
     board.each do |s|
       if s != "X" && s != "O"
         available_spaces << s
-
       end
     end
     
@@ -145,7 +120,6 @@ class Game
       spot = spot.to_i
       @valid == true
       if @board[spot] != "X" && @board[spot] != "O"
-        #botar um if else aqui em algum canto
         @board[spot] = @com
         @valid = true
         show_board(@board)
@@ -156,11 +130,8 @@ class Game
   end
 
   def eval_board
-    
     spot = nil
 
-    #se o jogador escolher user vs pc fazer o que está abaixo
-    #senão, definir  
       until spot
         if @board[4] == "4" && @valid != false
           spot = 4
@@ -178,7 +149,6 @@ class Game
           else
             spot = nil
           end
-
         end
       end
   end
@@ -250,9 +220,7 @@ class Game
     elsif b1.uniq == ["O"] || b2.uniq == ["O"] || b3.uniq == ["O"] || b4.uniq == ["O"] || b5.uniq == ["O"] || b6.uniq == ["O"] || b7.uniq == ["O"] || b8.uniq == ["O"]
       puts "Game over, O is the winner"  
     end 
-
   end
-
 end
 
 game = Game.new
