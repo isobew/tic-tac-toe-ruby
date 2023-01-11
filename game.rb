@@ -38,8 +38,8 @@ class Game
   def choose_multiplayer()
     puts "Choose your game mode
     
-    0 - User VS PC
-    1 - User VS User
+    0 - User vs. Computer
+    1 - User vs. User
     "
     
     choice = nil
