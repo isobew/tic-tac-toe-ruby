@@ -2,10 +2,10 @@ class Game
   def initialize
     @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
     @options = ["0", "1"]
-    @com = "X" 
-    @hum = "O" 
+    @player2 = "X" 
+    @player1 = "O" 
     @valid = true
-    @multiplayer
+    @multiplayer = nil
     @chosen = false
   end
 
@@ -15,7 +15,7 @@ class Game
     if @chosen == true
       show_board(@board)
       until game_is_over(@board) || tie(@board)
-        get_human_spot(@board)
+        get_player1_spot(@board)
         if !game_is_over(@board) && !tie(@board)
           if @multiplayer == false
             eval_board
@@ -69,7 +69,7 @@ class Game
     puts "\nInsert a number [0-8]:\n"
   end
 
-  def get_human_spot(board)
+  def get_player1_spot(board)
     available_spaces = []
     board.each do |s|
       if s != "X" && s != "O"
@@ -91,8 +91,7 @@ class Game
       spot = spot.to_i
       @valid == true
       if @board[spot] != "X" && @board[spot] != "O"
-        #botar um if else aqui em algum canto
-        @board[spot] = @hum
+        @board[spot] = @player1
         @valid = true
       end
     end
@@ -120,7 +119,7 @@ class Game
       spot = spot.to_i
       @valid == true
       if @board[spot] != "X" && @board[spot] != "O"
-        @board[spot] = @com
+        @board[spot] = @player2
         @valid = true
         show_board(@board)
       else
@@ -135,17 +134,17 @@ class Game
       until spot
         if @board[4] == "4" && @valid != false
           spot = 4
-          @board[spot] = @com
+          @board[spot] = @player2
         else
 
           if @valid == false
             return
           else  
-            spot = get_best_move(@board, @com)
+            spot = get_best_move(@board, @player2)
           end
           
           if @board[spot] != "X" && @board[spot] != "O"
-            @board[spot] = @com
+            @board[spot] = @player2
           else
             spot = nil
           end
@@ -163,13 +162,13 @@ class Game
     end
 
     available_spaces.each do |as|
-      board[as.to_i] = @com
+      board[as.to_i] = @player2
       if game_is_over(board)
         best_move = as.to_i
         board[as.to_i] = as
         return best_move
       else
-        board[as.to_i] = @hum
+        board[as.to_i] = @player1
         if game_is_over(board)
           best_move = as.to_i
           board[as.to_i] = as
@@ -181,12 +180,10 @@ class Game
     end
 
     if best_move
-      puts bets_move
       return best_move
     else
       n = rand(0..available_spaces.count)
-      m = available_spaces[n].to_i
-      return m
+      return available_spaces[n].to_i
     end
   end
 
