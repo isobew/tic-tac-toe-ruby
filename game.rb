@@ -6,29 +6,45 @@ class Game
     @hum = "O" 
     @valid = true
     @multiplayer
-    @choiced = false
+    @chosen = false
   end
 
   def start_game
     choose_multiplayer
 
-    if @choiced == true
+    if @chosen == true
       show_board(@board)
 
-      if @multiplayer == false
+      # if @multiplayer == false
         # executar jogo já criado
         until game_is_over(@board) || tie(@board)
           get_human_spot(@board)
           if !game_is_over(@board) && !tie(@board)
-            eval_board
+            # eval_board
+
+            if @multiplayer == false
+              eval_board
+            else
+              show_board(@board)
+              get_player2_spot(@board)
+            end
           end
          
           show_board(@board)
         end
-      else
-        puts "multiplayer"
-        # executar jogo novo pra 2 players
-      end
+      # else
+      #   puts "multiplayer"
+      #   # executar jogo novo pra 2 players
+      #   until game_is_over(@board) || tie(@board)
+      #     get_human_spot(@board)
+      #     if !game_is_over(@board) && !tie(@board)
+      #       eval_board
+      #       #mudança aqui
+      #     end
+         
+      #     show_board(@board)
+      #   end
+      # end
       
   
       if tie(@board)
@@ -60,7 +76,7 @@ class Game
 
       choice = choice.to_i
       @valid = true
-      @choiced = true
+      @chosen = true
       if choice == 0
         @multiplayer = false
       else
@@ -98,8 +114,43 @@ class Game
       spot = spot.to_i
       @valid == true
       if @board[spot] != "X" && @board[spot] != "O"
+        #botar um if else aqui em algum canto
         @board[spot] = @hum
         @valid = true
+      end
+    end
+  end
+
+  def get_player2_spot(board)
+
+    available_spaces = []
+    board.each do |s|
+      if s != "X" && s != "O"
+        available_spaces << s
+
+      end
+    end
+    
+    spot = nil
+
+    until spot
+      spot = gets.chomp
+
+      until available_spaces.include?(spot)
+        puts "\nPLEASE, INSERT A VALID NUMBER\n"
+        @valid = false
+        return
+      end
+
+      spot = spot.to_i
+      @valid == true
+      if @board[spot] != "X" && @board[spot] != "O"
+        #botar um if else aqui em algum canto
+        @board[spot] = @com
+        @valid = true
+        show_board(@board)
+      else
+        spot = nil
       end
     end
   end
@@ -110,7 +161,6 @@ class Game
 
     #se o jogador escolher user vs pc fazer o que está abaixo
     #senão, definir  
-    if @multiplayer == false
       until spot
         if @board[4] == "4" && @valid != false
           spot = 4
@@ -131,9 +181,6 @@ class Game
 
         end
       end
-    else
-      return
-    end  
   end
 
   def get_best_move(board, next_player, depth = 0, best_score = {})
@@ -198,13 +245,12 @@ class Game
     b7 = [board[0], board[4], board[8]]
     b8 = [board[2], board[4], board[6]]
 
-    if b1.uniq || b2.uniq == ["X"] || b3.uniq == ["X"] || b4.uniq == ["X"] || b5.uniq == ["X"] || b6.uniq == ["X"] || b7.uniq == ["X"] || b8.uniq == ["X"]
+    if b1.uniq == ["X"] || b2.uniq == ["X"] || b3.uniq == ["X"] || b4.uniq == ["X"] || b5.uniq == ["X"] || b6.uniq == ["X"] || b7.uniq == ["X"] || b8.uniq == ["X"]
       puts "Game over, X is the winner"
     elsif b1.uniq == ["O"] || b2.uniq == ["O"] || b3.uniq == ["O"] || b4.uniq == ["O"] || b5.uniq == ["O"] || b6.uniq == ["O"] || b7.uniq == ["O"] || b8.uniq == ["O"]
       puts "Game over, O is the winner"  
     end 
 
-    puts b1.uniq, b1.uniq!, b2.uniq, b3.uniq, b4.uniq, b5.uniq, b6.uniq, b7.uniq, b8.uniq, b8.uniq!
   end
 
 end
